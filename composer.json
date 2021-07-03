@@ -1,0 +1,13 @@
+{
+    "name": "fonata/avatar_overlay_generator",
+    "description": "A tool to place overlays over social media avatars.",
+    "type": "drupal-module",
+    "license": "GPL-3.0-or-later",
+    "authors": [
+        {
+            "name": "Christian Bläul",
+            "email": "christian@blaeul.de"
+        }
+    ],
+    "require": {}
+}
