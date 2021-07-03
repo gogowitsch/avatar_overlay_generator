@@ -1,5 +1,5 @@
 name: avatar_overlay_generator
-description: Generates social media avatars
+description: A tool to place overlays over social media avatars.
 package: Custom
 type: module
 core: 8.x
