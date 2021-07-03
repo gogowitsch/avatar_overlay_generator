@@ -1,0 +1,14 @@
+avatar_overlay_generator.avatar_form:
+  path: '/avatar_generator'
+  defaults:
+    _form: '\Drupal\avatar_overlay_generator\Form\AugustRiseUpAvatarForm'
+    _title: 'Avatar generator'
+  requirements:
+    _access: 'TRUE'
+
+avatar_overlay_generator.download:
+  path: '/avatar_generator/download/{file}/{name}/{result}'
+  defaults:
+    _controller: '\Drupal\avatar_overlay_generator\Controller\DownloadController::build'
+  requirements:
+    _access: 'TRUE'
