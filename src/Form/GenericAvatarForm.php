@@ -48,7 +48,8 @@ class GenericAvatarForm extends FormBase {
 
   private function buildRadioTitle($file) {
     $imageUrl = substr($file, strlen(\Drupal::root()), -3) . 'png';
-    $imgTag = sprintf('<img style="clear:both; float: left" width="30" src="%s" title="%s" alt="Avatar"> ', $imageUrl, $this->t('Example'));
+    $title = $this->t('Click to open a larger example.');
+    $imgTag = sprintf('<a href="%1$s" target="_blank"><img style="clear:both; float: left" width="70" src="%1$s" title="%2$s" alt="Avatar"></a> ', $imageUrl, $title);
     return $imgTag .
       substr(basename($file), 0, -4);
   }
