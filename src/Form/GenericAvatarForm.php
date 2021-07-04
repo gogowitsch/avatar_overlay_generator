@@ -11,12 +11,13 @@ use Drupal\Core\Render\Markup;
  */
 class GenericAvatarForm extends FormBase {
 
-  private $dom;
+  private \DOMDocument $dom;
 
-  private $picturePath;
+  private string $picturePath;
 
-  private $svgElement;
+  private \DOMElement $svgElement;
 
+  /** @var bool|array */
   private $imageSize;
 
   /**
@@ -39,7 +40,7 @@ class GenericAvatarForm extends FormBase {
       '#type' => 'markup',
       '#markup' =>
         '<br><br><small><small>' .
-        $this->t('The source code for this page is available at @url.', ['@url' =>Markup::create( '<a href="https://github.com/Fonata/avatar_overlay_generator">github.com/Fonata/avatar_overlay_generator</a>')]) .
+        $this->t('The source code for this page is available at @url.', ['@url' => Markup::create('<a href="https://github.com/Fonata/avatar_overlay_generator">github.com/Fonata/avatar_overlay_generator</a>')]) .
         '</small></small>',
     ];
     return $form;
@@ -47,7 +48,7 @@ class GenericAvatarForm extends FormBase {
 
   private function buildRadioTitle($file) {
     $imageUrl = substr($file, strlen(\Drupal::root()), -3) . 'png';
-    $imgTag = sprintf('<img style="clear:both; float: left" width="30" src="%s" title="%s"> ', $imageUrl, $this->t('Example'));
+    $imgTag = sprintf('<img style="clear:both; float: left" width="30" src="%s" title="%s" alt="Avatar"> ', $imageUrl, $this->t('Example'));
     return $imgTag .
       substr(basename($file), 0, -4);
   }
@@ -109,6 +110,7 @@ class GenericAvatarForm extends FormBase {
 
   /**
    * {@inheritdoc}
+   * @noinspection PhpParameterByRefIsNotUsedAsReferenceInspection
    */
   public function submitForm(array &$form, FormStateInterface $form_state) {
     $this->svgElement->setAttributeNS('http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd', 'absref', $this->picturePath);
@@ -119,31 +121,16 @@ class GenericAvatarForm extends FormBase {
     $tmp_png_file = $file_system->tempnam($file_system->getTempDirectory(), 'png_');
 
     $expandFactor = 1.164876404;
-    $messenger = \Drupal::messenger();
     $width = round($this->imageSize[0] * $expandFactor);
     $cmd = "inkscape '$tmp_svg_file' --export-png='$tmp_png_file' --export-width=$width";
     exec($cmd, $output, $result_code);
     if ($result_code) {
       $msg = $this->t('The avatar overlay couldn’t be added.');
-      $messenger->addError($msg);
+      \Drupal::messenger()->addError($msg);
       \Drupal::logger('avatar_overlay_generator')->error('Failed to execute Inkscape: @error', ['@error' => $msg . ' ' . $cmd . ' ' . implode(', ', $output)]);
     }
     else {
-      $messenger->addStatus(
-        $this->t(
-          'Success! You can <a href=":url">download the picture here</a>.',
-          [
-            ':url' => \Drupal::urlGenerator()->generateFromRoute(
-              'avatar_overlay_generator.download',
-              [
-                'file' => basename($tmp_png_file),
-                'name' => preg_replace('/[^-a-z_0-9.]/i', '', $_FILES['files']['name']['source_picture']),
-                'result' => $form['overlay_to_add']['#short_name'][$form_state->getValue('overlay_to_add')],
-              ]
-            ),
-          ]
-        )
-      );
+      $this->showSuccessMessage($tmp_png_file, $form['overlay_to_add']['#short_name'], $form_state);
     }
   }
 
@@ -158,6 +145,23 @@ class GenericAvatarForm extends FormBase {
       ],
     ];
     return $form;
+  }
+
+  private function showSuccessMessage($tmp_png_file, $shortName, FormStateInterface $form_state): void {
+    $msg = $this->t(
+      'Success! You can <a href=":url">download the picture here</a>.',
+      [
+        ':url' => \Drupal::urlGenerator()->generateFromRoute(
+          'avatar_overlay_generator.download',
+          [
+            'file' => basename($tmp_png_file),
+            'name' => preg_replace('/[^-a-z_0-9.]/i', '', $_FILES['files']['name']['source_picture']),
+            'result' => $shortName[$form_state->getValue('overlay_to_add')],
+          ]
+        ),
+      ]
+    );
+    \Drupal::messenger()->addStatus($msg);
   }
 
 }
