@@ -76,6 +76,10 @@ class GenericAvatarForm extends FormBase {
    */
   public function validateForm(array &$form, FormStateInterface $form_state) {
     $this->picturePath = $_FILES['files']['tmp_name']['source_picture'];
+    if (!$this->picturePath) {
+      $form_state->setError($form['source_picture'], $this->t('You have to select a picture from your computer.'));
+      return;
+    }
     $this->imageSize = $size = getimagesize($this->picturePath);
     if (!$size || $size[0] < 10 || $size[1] < 10) {
       $form_state->setError($form['source_picture'], $this->t('Invalid picture; please select a different picture.'));
