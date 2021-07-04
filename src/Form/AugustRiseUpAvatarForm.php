@@ -20,11 +20,7 @@ class AugustRiseUpAvatarForm extends GenericAvatarForm {
 
     $form ['overlay_to_add'] = $this->buildOverlaySelection(__DIR__ . '/../../overlays/AugustRiseUp');
 
-    $form['submit'] = [
-      '#type' => 'submit',
-      '#value' => $this->t('Generate'),
-    ];
-    return $form;
+    return parent::buildForm($form, $form_state);
   }
 
 }

@@ -4,6 +4,7 @@ namespace Drupal\avatar_overlay_generator\Form;
 
 use Drupal\Core\Form\FormBase;
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\Render\Markup;
 
 /**
  * Class AvatarForm.
@@ -29,13 +30,17 @@ class GenericAvatarForm extends FormBase {
    * {@inheritdoc}
    */
   public function buildForm(array $form, FormStateInterface $form_state) {
-    $form = $this->buildSelectPicture($form);
-
-    $form['overlay_to_add'] = $this->buildOverlaySelection(__DIR__ . '/../..');
-
     $form['submit'] = [
       '#type' => 'submit',
       '#value' => $this->t('Generate'),
+    ];
+
+    $form['note'] = [
+      '#type' => 'markup',
+      '#markup' =>
+        '<br><br><small><small>' .
+        $this->t('The source code for this page is available at @url.', ['@url' =>Markup::create( '<a href="https://github.com/Fonata/avatar_overlay_generator">github.com/Fonata/avatar_overlay_generator</a>')]) .
+        '</small></small>',
     ];
     return $form;
   }
@@ -143,6 +148,7 @@ class GenericAvatarForm extends FormBase {
   }
 
   protected function buildSelectPicture(array $form): array {
+    /** @noinspection SyntaxError */
     $form['source_picture'] = [
       '#type' => 'file',
       '#title' => $this->t('Select a source picture from your computer') . ':',
