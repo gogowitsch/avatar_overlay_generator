@@ -14,7 +14,7 @@ This repo’s software runs at https://klimainitiativen.info/avatar_generator
 
 ## Installation
 
-This repository forms a [Drupal](https://www.drupal.org/) module. To use it, you need a working Drupal 8 or 9 instance.
+This repository forms a [Drupal](https://www.drupal.org/) module. To use it, you need a working instance of Drupal 8 or higher.
 
 You can install the module using Composer by executing the following in your server's shell (e.g., Bash):
 
@@ -37,7 +37,7 @@ The most important task is to add more overlays
    preview.
 2. Place both files in proper `overlays` subdirectory of your server.
 3. If you want to give the overlays back to the community, create a pull request
-   at https://github.com/Fonata/avatar_overlay_generator/pulls
+   at https://github.com/gogowitsch/avatar_overlay_generator/pulls
 
 To serve multiple URLs with different sets of overlays, these steps are needed:
 
@@ -48,7 +48,7 @@ To serve multiple URLs with different sets of overlays, these steps are needed:
 ## Bugs/Features/Patches:
 
 If you want to report bugs, feature requests, or submit a patch, please do so at the project page on the GitHub website:
-https://github.com/Fonata/avatar_overlay_generator/issues
+https://github.com/gogowitsch/avatar_overlay_generator/issues
 
 ## Author
 

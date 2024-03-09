@@ -40,7 +40,7 @@ class GenericAvatarForm extends FormBase {
       '#type' => 'markup',
       '#markup' =>
         '<br><br><small><small>' .
-        $this->t('The source code for this page is available at @url.', ['@url' => Markup::create('<a href="https://github.com/Fonata/avatar_overlay_generator">github.com/Fonata/avatar_overlay_generator</a>')]) .
+        $this->t('The source code for this page is available at @url.', ['@url' => Markup::create('<a href="https://github.com/gogowitsch/avatar_overlay_generator">github.com/gogowitsch/avatar_overlay_generator</a>')]) .
         '</small></small>',
     ];
     return $form;
